@@ -3,6 +3,8 @@ import random as rnd
 import grad_desc as gd
 
 
+
+
 # SGD
 # INPUT : Data Matrix, Loss fn (assume convex for minimization!), batch size, epochs
 # INITIALIZE : make `epochs`-many random partitions of full data, each batch of size `batch_size`-size.
@@ -17,16 +19,20 @@ def randomizer (num_of_samples : int, batch_size : int) : # Use each epoch
 
 def ols_error_function(X,y) : # Returns a function that will take "Data", that is [X,y]
     def loss (theta) :
-        return 0.5 * np.sum((X @ theta - y)**2)
+        return np.sum((y - X @ theta)**2) # This X will have to have an extra column of 1s.
     return loss
 
 
 
-def sgd(X, y, n_epochs : int, batch_size : int, learning_rate : float) :
+def sgd(XX, y, n_epochs : int, batch_size : int, learning_rate : float, iters_per_gd : int = 500) :
+    # First prepare for an added constant. Add a column of ones to X.
+    X = np.concatenate((np.ones((XX.shape[0], 1), dtype=float), XX), axis=1)
+
     epoch = 0
     n_samples = X.shape[0]
     current_theta = np.zeros(X.shape[1])
-    n_iters = 200 # Number of iterations to be used for each use of gd.
+    # Number of iterations to be used for each use of gd.
+    # print("starting sgd. epoch 1, current theta is 0")
     while epoch < n_epochs :
         indices = randomizer(n_samples , batch_size)
 
@@ -35,12 +41,12 @@ def sgd(X, y, n_epochs : int, batch_size : int, learning_rate : float) :
 
         error = ols_error_function(X_train,y_train)
         # now do gradient descent :
-        gradient = gd.gd(error, current_theta, n_iters, learning_rate)
-        g_norm = np.sum(gradient**2)
-        if g_norm < 1e-6 :
-            break
-        else :
-            gradient /= g_norm
-            current_theta = current_theta - learning_rate * gradient
+        # print(f"epoch {epoch}, current theta is {str(current_theta)}")
+        # print()
+
+        current_theta = gd.gd(error, current_theta, iters_per_gd, learning_rate)
+
         epoch = epoch + 1
-    return current_theta
+    # print()
+    # print(f"loop finished. theta is {str(current_theta)}")
+    return current_theta # This is t_0, t_1, t_2, ..., t_n
