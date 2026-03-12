@@ -1,12 +1,5 @@
 import numpy as np
 
-# SGD
-# INPUT : A function (differentiable), A tolerance (OR A NUMBER OF ITERATIONS), A step-size.
-# INITIALIZE : A random point (or 5)
-# PROCESS : Compute gradient at x(t). Normalize.
-# UPDATE : x(t+1) = x(t) - alpha*(normalized_gradient)
-# CHECK_STOPPING : Tolerance? Number of iterations?
-
 
 # There is scope for making the numerical derivative better. Not the time for it.
 def numerical_derivative(f, x, axis, diff_step = 0.00001):
