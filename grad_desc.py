@@ -2,6 +2,7 @@ import numpy as np
 
 
 # There is scope for making the numerical derivative better. Not the time for it.
+# %%
 def numerical_derivative(f, x, axis, diff_step = 1e-5):
     if axis >= x.shape[0] :
         raise IndexError(f"Can't differentiate wrt x_{axis+1} when x has shape {x.shape}")
@@ -16,7 +17,7 @@ def numerical_derivative(f, x, axis, diff_step = 1e-5):
         return 0.5 * (left + right)
 
 #-------------------------------------------------------------------------------------------------
-
+# %%
 # Takes a function and a point
 # Returns an array (same shape as input vector) containing partial derivatives evaluated at the point
 def grad(f, x) :
@@ -29,6 +30,7 @@ def grad(f, x) :
 
 #-------------------------------------------------------------------------------------------------
 
+# %%
 # Takes a function, initial point, number of iterations and step size as input
 # Performs gradient descent, returns an estimate of a local arg_min(f), given the starting point.
 def gd(f, init_x, max_iters : int, step_size : float) :
